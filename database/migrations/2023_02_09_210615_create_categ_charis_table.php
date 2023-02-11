@@ -14,7 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('categ_charis', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+
             $table->id();
+            $table->foreignId('category_id')->constrained();
+            $table->foreignId('charity_id')->constrained()->cascadeOnDelete();
+
             $table->timestamps();
         });
     }
