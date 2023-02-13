@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\My_cases\My_casesCollection;
+use App\Http\Resources\My_cases\My_casesResource;
 use App\Models\my_case;
 use App\Http\Requests\Storemy_caseRequest;
 use App\Http\Requests\Updatemy_caseRequest;
@@ -15,7 +17,7 @@ class MyCaseController extends Controller
      */
     public function index()
     {
-        //
+        return new My_casesCollection(my_case::all());
     }
 
     /**
@@ -47,7 +49,8 @@ class MyCaseController extends Controller
      */
     public function show(my_case $my_case)
     {
-        //
+
+        return new My_casesResource($my_case);
     }
 
     /**

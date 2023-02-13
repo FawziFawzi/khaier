@@ -17,7 +17,16 @@ class CharityFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name'=>$this->faker->unique()->company(),
+            'address'=>$this->faker->address(),
+            'phone_number'=>$this->faker->unique()->e164PhoneNumber(),
+            'password'=>md5('password'),
+            'email'=>$this->faker->unique()->companyEmail(),
+            'email_verified_at'=>now(),
+            'excerpt'=>$this->faker->paragraph(1),
+            'thumbnail'=>'charity thumbnail here'
+
+
         ];
     }
 }

@@ -15,7 +15,7 @@ class CharityController extends Controller
      */
     public function index()
     {
-        //
+       //
     }
 
     /**

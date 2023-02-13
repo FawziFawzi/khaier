@@ -22,7 +22,7 @@ Route::middleware(['auth:api'])->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/charities',CharityController::class);
-Route::apiResource('/home',MyCaseController::class);
+Route::apiResource('/my_cases',MyCaseController::class); //Home button
 
 
 Route::apiResource('/donations',DonationController::class);
