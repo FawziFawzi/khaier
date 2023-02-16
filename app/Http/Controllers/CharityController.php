@@ -43,11 +43,13 @@ class CharityController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\charity  $charity
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(charity $charity)
     {
-        //
+        return response()->json([
+           $charity //dummy only
+        ]);
     }
 
     /**

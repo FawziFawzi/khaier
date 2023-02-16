@@ -14,6 +14,10 @@ class My_casesCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'title'=>           $this->title,
+            'excerpt'=>         $this->excerpt,
+            'category'=>        $this->category
+        ];
     }
 }

@@ -13,11 +13,11 @@ class MyCaseController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        return new My_casesCollection(my_case::all());
+        return My_casesResource::collection(my_case::all());
     }
 
     /**
