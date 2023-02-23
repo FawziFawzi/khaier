@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\authentication\LoginController;
 use App\Http\Controllers\authentication\SignupController;
 use App\Http\Controllers\authentication\VerifynumberController;
 use Illuminate\Http\Request;
@@ -24,9 +25,10 @@ Route::middleware(['auth:api'])->get('/user', function (Request $request) {
 });
 Route::post('/Verify_phone_Number',[VerifynumberController::class,'store'])->middleware('guest');
 Route::post('/signup',[SignupController::class,'store'])->middleware('guest');
+Route::post('/login',[LoginController::class,'store'])->middleware('guest');
 
-Route::apiResource('/charities',CharityController::class);
-Route::apiResource('/my_cases',MyCaseController::class);
+Route::apiResource('/charities',CharityController::class)->middleware(['auth:api']);
+Route::apiResource('/my_cases',MyCaseController::class)->middleware(['auth:api']);
 
 
 Route::apiResource('/donations',DonationController::class);
