@@ -23,9 +23,12 @@ use App\Http\Controllers\MyCaseController;
 Route::middleware(['auth:api'])->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/Verify_phone_Number',[VerifynumberController::class,'store'])->middleware('guest');
+Route::post('/Verify_phone_signup',[VerifynumberController::class,'signup'])->middleware('guest');
 Route::post('/signup',[SignupController::class,'store'])->middleware('guest');
 Route::post('/login',[LoginController::class,'store'])->middleware('guest');
+
+Route::post('/Verify_phone_forgetPassword',[VerifynumberController::class,'forgetPassword'])->middleware('guest');
+Route::post('/update_password',[LoginController::class,'update']);
 
 Route::apiResource('/charities',CharityController::class)->middleware(['auth:api']);
 Route::apiResource('/my_cases',MyCaseController::class)->middleware(['auth:api']);

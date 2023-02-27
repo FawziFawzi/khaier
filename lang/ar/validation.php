@@ -48,7 +48,7 @@ return [
     'email' => 'يجب أن يكون :attribute عنوان بريد إلكتروني صحيح البُنية',
     'ends_with' => 'الـ :attribute يجب ان ينتهي بأحد القيم التالية :value.',
     'enum' => 'الحقل :attribute غير صحيح',
-    'exists' => 'الحقل :attribute لاغٍ',
+    'exists' => ':attribute غير مسجل لدينا',
     'file' => 'الـ :attribute يجب أن يكون من ملفا.',
     'filled' => 'الحقل :attribute إجباري',
     'gt' => [

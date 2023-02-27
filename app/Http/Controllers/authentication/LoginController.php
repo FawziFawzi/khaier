@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\authentication;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -27,14 +29,13 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = $request->validate([
-            'phone_number'=>'required',
-            'password'=>'required',
-        ]);
+        $attributes = $this->userValidate($request);
+
         if (!auth()->attempt($attributes)){
             return response(['error' => 'يوجد خطأ في رقم الهاتف أو كلمة المرور']);
         }
         $token = auth()->user()->createToken('API Token')->accessToken;
+
         return response([
             'user'=>\auth()->user(),
             'token'=>$token
@@ -61,9 +62,24 @@ class LoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+
+
+        $exists ='exists:users,phone_number';
+        $this->userValidate($request,$exists);
+
+        $user = User::firstWhere('phone_number',$request->phone_number);
+
+        $user->forceFill([
+            'password' =>bcrypt($request->password)
+        ]);
+        $user->save();
+
+       return response([
+           'message'=>'password updated successfully',
+           'link'=>'localhost:8000/api/login'
+       ]);
     }
 
     /**
@@ -75,5 +91,13 @@ class LoginController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function userValidate($request,$exists =null){
+        return $request->validate([
+            'phone_number'=>'required|'.$exists,
+            'password'=>'required|min:8',
+        ]);
     }
 }

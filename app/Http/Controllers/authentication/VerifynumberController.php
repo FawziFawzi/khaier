@@ -25,21 +25,21 @@ class VerifynumberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function signup(Request $request)
     {
         $rules =['phone_number' => 'required|min:11|max:12|unique:users,phone_number'];
         $input = $request->only('phone_number');
 
-        $validator = Validator::make($input,$rules,$messages = [
-            'phone_number' => 'رقمك مسجل عندنا بالفعل',
-            'min' =>'لقد أدخلت اقل من 11 رقم',
-            'max' =>'لقد أدخلت اكثر من 12 رقم',
-        ]);
+        $phonemessage ='رقمك مسجل عندنا بالفعل';
+
+       $validator = $this->validation($input,$rules,$phonemessage);
+
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'error' => $validator->messages()]);
+            return response()->json(['success' => 'denied', 'error' => $validator->messages()]);
         }
+
         return response()->json([
-            'success' => true
+            'success' => 'accepted'
         ]);
 
     }
@@ -50,9 +50,21 @@ class VerifynumberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function forgetPassword(Request $request)
     {
-        //
+        $rules =['phone_number' => 'required|min:11|max:12|exists:users,phone_number'];
+        $input = $request->only('phone_number');
+        $phonemessage ='رقمك غير مسجل ';
+
+        $validator = $this->validation($input,$rules,$phonemessage);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => 'denied', 'error' => $validator->messages()]);
+        }
+
+        return response()->json([
+            'success' => 'accepted'
+        ]);
     }
 
     /**
@@ -62,9 +74,14 @@ class VerifynumberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function validation($input,$rules,$phonemessage)
     {
-        //
+        $validator = Validator::make($input,$rules,$messages = [
+            'phone_number' => $phonemessage,
+            'min' =>'لقد أدخلت اقل من 11 رقم',
+            'max' =>'لقد أدخلت اكثر من 12 رقم',
+        ]);
+        return $validator;
     }
 
     /**
