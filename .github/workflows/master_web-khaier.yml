@@ -19,6 +19,7 @@ jobs:
       - name: Azure Login
         uses: Azure/login@v1
 
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -54,7 +55,7 @@ jobs:
           name: php-app
 
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v2
+        uses: Azure/login@v1
         id: deploy-to-webapp
         with:
           app-name: 'web-khaier'
