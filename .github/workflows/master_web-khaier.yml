@@ -16,6 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Azure Login
+        uses: Azure/login@v1
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
