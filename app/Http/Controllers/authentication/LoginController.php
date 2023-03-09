@@ -67,18 +67,19 @@ class LoginController extends Controller
 
 
         $exists ='exists:users,phone_number';
-        $this->userValidate($request,$exists);
+        $min = 'min:8';
+        $this->userValidate($request,$exists,$min);
 
         $user = User::firstWhere('phone_number',$request->phone_number);
 
-        $user->forceFill([
+        $user->Fill([
             'password' =>bcrypt($request->password)
         ]);
         $user->save();
 
        return response([
            'message'=>'password updated successfully',
-           'link'=>'localhost:8000/api/login'
+           'link'=>env('APP_URL').'/api/login'
        ]);
     }
 
@@ -94,10 +95,12 @@ class LoginController extends Controller
     }
 
 
-    public function userValidate($request,$exists =null){
-        return $request->validate([
+    public function userValidate($request,$exists =null,$min=null){
+        $attributes=$request->validate([
             'phone_number'=>'required|'.$exists,
-            'password'=>'required|min:8',
+            'password'=>'required|'.$min,
         ]);
+
+        return $attributes;
     }
 }
