@@ -72,6 +72,8 @@ class LoginController extends Controller
 
         $user = User::firstWhere('phone_number',$request->phone_number);
 
+
+
         $user->Fill([
             'password' =>bcrypt($request->password)
         ]);
