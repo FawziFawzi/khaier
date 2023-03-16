@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\categories\categotiesResource;
+use App\Http\Resources\My_cases\My_casesCollection;
 use App\Models\category;
 use App\Http\Requests\StorecategoryRequest;
 use App\Http\Requests\UpdatecategoryRequest;
@@ -15,7 +17,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $category =  categotiesResource::collection(category::all());
+        return response([
+            $category
+        ]);
     }
 
     /**
@@ -47,7 +52,10 @@ class CategoryController extends Controller
      */
     public function show(category $category)
     {
-        //
+        $cases =My_casesCollection::collection($category->cases);
+        return response([
+            "cases" => $cases
+        ]);
     }
 
     /**

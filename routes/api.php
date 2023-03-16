@@ -3,6 +3,8 @@
 use App\Http\Controllers\authentication\LoginController;
 use App\Http\Controllers\authentication\SignupController;
 use App\Http\Controllers\authentication\VerifynumberController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\homeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonationController;
@@ -29,9 +31,11 @@ Route::post('/login',[LoginController::class,'store'])->middleware('guest');
 
 Route::post('/Verify_phone_forgetPassword',[VerifynumberController::class,'forgetPassword'])->middleware('guest');
 Route::post('/update_password',[LoginController::class,'update']);
+Route::get('/home',[homeController::class, 'index'])->middleware(['auth:api']);
 
 Route::apiResource('/charities',CharityController::class)->middleware(['auth:api']);
 Route::apiResource('/my_cases',MyCaseController::class)->middleware(['auth:api']);
+Route::apiResource('/categories', CategoryController::class)->middleware(['auth:api']);
 
 
 Route::apiResource('/donations',DonationController::class);

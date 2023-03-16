@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources\My_cases;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class My_casesCollection extends ResourceCollection
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class My_casesCollection extends JsonResource
 {
     /**
      * Transform the resource collection into an array.
@@ -15,9 +16,15 @@ class My_casesCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
+//            'data'=>$this->collection,
             'title'=>           $this->title,
-            'excerpt'=>         $this->excerpt,
-            'category'=>        $this->category
+            'category'=>        $this->category,
+            'maxAmount'=>       $this->max_amount,
+            'collectedAmount'=> $this->collected_amount,
+            'priority'=>        $this->priority,
+            'thumbnail'=>       $this->thumbnail,
+            'href'=>[
+                'fullCard'=>route('my_cases.show',$this->id)]
         ];
     }
 }
