@@ -23,6 +23,7 @@ class homeController extends Controller
     {
         //TODO
 //        categories at the top
+        $categories_link = route('categories.index');
         $categities = categotiesResource::collection(category::all());
 
 
@@ -41,7 +42,10 @@ class homeController extends Controller
         $charities = charityCollection::collection($charity);
 
         return response([
-            "categories"=>$categities ,
+            "categories"=>[
+                'categories link'=>$categories_link,
+                'all_categories' =>$categities
+            ] ,
             "cases"=>$cases,
             "charities" =>$charities,
         ]);
