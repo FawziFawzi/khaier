@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Resources\categories\categotiesResource;
 use App\Http\Resources\charities\charityCollection;
 use App\Http\Resources\My_cases\My_casesCollection;
-use App\Http\Resources\My_cases\My_casesResource;
 use App\Models\category;
 use App\Models\charity;
 use App\Models\my_case;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class homeController extends Controller
 {
@@ -21,25 +21,29 @@ class homeController extends Controller
      */
     public function index()
     {
-        //TODO
+
+        //        High priority cases
+        $cases =  My_casesCollection::collection(
+            my_case::orderBy('priority','desc')->get()
+        );
+
+//     Search
+
+        if (request('search')){
+          return  $this->searchCases();
+        }
+
+
 //        categories at the top
         $categories_link = route('categories.index');
         $categities = categotiesResource::collection(category::all());
 
 
-//        High priority cases
-        $cases =  My_casesCollection::collection(
-            my_case::all()->sortByDesc('priority')
-        );
-
 //        Charities nearby
-        $useraddress = auth()->user()->address;
 
-        $charity = DB::table('charities')
-            ->where('address',$useraddress)
-            ->get();
-
-        $charities = charityCollection::collection($charity);
+        $charities = charityCollection::collection(
+            charity::where('address',auth()->user()->address)->get()
+        );
 
         return response([
             "categories"=>[
@@ -48,7 +52,7 @@ class homeController extends Controller
             ] ,
             "cases"=>$cases,
             "charities" =>$charities,
-        ]);
+        ],200);
     }
 
     /**
@@ -94,5 +98,25 @@ class homeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function searchCases()
+    {
+        $cases =
+            My_casesCollection::collection(
+                        my_case::whereHas('category', function (Builder $query) {
+                            $query->where('name', 'like', '%'.request('search') .'%');
+                        })->get()
+            );
+
+        if ($cases->count() != 0){
+            return response([
+                'cases' =>$cases
+            ],Response::HTTP_OK);
+        }else{
+            return response([
+                'error'=>'لا يوجد حالات مطابقة لبحثك'
+            ],Response::HTTP_NOT_FOUND);
+        }
     }
 }

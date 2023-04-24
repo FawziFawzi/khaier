@@ -48,4 +48,10 @@ class User extends Authenticatable
     public function donations(){
         return $this->hasMany(donation::class);
     }
+    public function city(){
+        return $this->belongsTo(City::class);
+    }
+    public function district(){
+        return $this->belongsTo(District::class);
+    }
 }

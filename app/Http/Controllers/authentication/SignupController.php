@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class SignupController extends Controller
 {
@@ -32,13 +33,13 @@ class SignupController extends Controller
             'username' => 'required|min:8|max:20|unique:users,username',
             'name'=>'required|max:30',
             'phone_number' => 'required|min:11|max:12|unique:users,phone_number',
-            'password' => 'required|min:8',
+            'password' => 'required|confirmed|min:8',
             'address' => 'required|max:200',
         ]);
         $attributes['password'] = bcrypt($request->password);
         $user = User::create($attributes);
         $token = $user->createToken('API Token')->accessToken;
-        return response([ 'user' => $user, 'token' => $token]);
+        return response([ 'user' => $user, 'token' => $token],Response::HTTP_OK);
 
 
 //        $rules =[

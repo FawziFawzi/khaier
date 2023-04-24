@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class VerifynumberController extends Controller
 {
@@ -35,13 +36,9 @@ class VerifynumberController extends Controller
        $validator = $this->validation($input,$rules,$phonemessage);
 
         if ($validator->fails()) {
-            return response()->json(['success' => 'denied', 'error' => $validator->messages()]);
+            return response([ 'error' => $validator->messages()],Response::HTTP_UNAUTHORIZED);
         }
-
-        return response()->json([
-            'success' => 'accepted'
-        ]);
-
+        return response(['message' => 'accepted'],Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -52,19 +49,19 @@ class VerifynumberController extends Controller
      */
     public function forgetPassword(Request $request)
     {
-        $rules =['phone_number' => 'required|min:11|max:12|exists:users,phone_number'];
+        $rules =['phone_number' => 'required|min:11|max:12|exists:users,phone_number',
+
+            ];
         $input = $request->only('phone_number');
         $phonemessage ='رقمك غير مسجل ';
 
         $validator = $this->validation($input,$rules,$phonemessage);
 
         if ($validator->fails()) {
-            return response()->json(['success' => 'denied', 'error' => $validator->messages()]);
+            return response([ 'error' => $validator->messages()],Response::HTTP_NOT_FOUND);
         }
 
-        return response()->json([
-            'success' => 'accepted'
-        ]);
+        return response(['message' => 'accepted'],Response::HTTP_ACCEPTED);
     }
 
     /**

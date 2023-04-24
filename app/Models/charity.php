@@ -20,4 +20,11 @@ class charity extends Model
     public function categ_chari(){
         return $this->hasMany(categ_chari::class);
     }
+
+    public function city(){
+        return $this->belongsTo(City::class);
+    }
+    public function district(){
+        return $this->belongsTo(District::class);
+    }
 }

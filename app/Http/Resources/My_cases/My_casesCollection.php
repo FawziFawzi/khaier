@@ -18,7 +18,7 @@ class My_casesCollection extends JsonResource
         return [
 //            'data'=>$this->collection,
             'title'=>           $this->title,
-            'category'=>        $this->category,
+            'category'=>        $this->category->name,
             'maxAmount'=>       $this->max_amount,
             'collectedAmount'=> $this->collected_amount,
             'priority'=>        $this->priority,

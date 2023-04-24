@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller
 {
@@ -32,14 +33,14 @@ class LoginController extends Controller
         $attributes = $this->userValidate($request);
 
         if (!auth()->attempt($attributes)){
-            return response(['error' => 'يوجد خطأ في رقم الهاتف أو كلمة المرور']);
+            return response(['error' => 'يوجد خطأ في رقم الهاتف أو كلمة المرور'],Response::HTTP_UNAUTHORIZED);
         }
         $token = auth()->user()->createToken('API Token')->accessToken;
 
         return response([
             'user'=>\auth()->user(),
             'token'=>$token
-        ]);
+        ],Response::HTTP_OK);
 
 
     }
@@ -68,11 +69,11 @@ class LoginController extends Controller
 
         $exists ='exists:users,phone_number';
         $min = 'min:8';
-        $this->userValidate($request,$exists,$min);
+        $confirmed = 'confirmed';
+
+        $this->userValidate($request,$exists,$min,$confirmed);
 
         $user = User::firstWhere('phone_number',$request->phone_number);
-
-
 
         $user->Fill([
             'password' =>bcrypt($request->password)
@@ -82,7 +83,7 @@ class LoginController extends Controller
        return response([
            'message'=>'password updated successfully',
            'link'=>env('APP_URL').'/api/login'
-       ]);
+       ],Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -97,10 +98,10 @@ class LoginController extends Controller
     }
 
 
-    public function userValidate($request,$exists =null,$min=null){
+    public function userValidate($request,$exists =null,$min=null,$confirmed=null){
         $attributes=$request->validate([
             'phone_number'=>'required|'.$exists,
-            'password'=>'required|'.$min,
+            'password'=>'required|'.$min.'|'.$confirmed,
         ]);
 
         return $attributes;
