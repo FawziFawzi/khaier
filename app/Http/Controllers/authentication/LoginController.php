@@ -66,17 +66,13 @@ class LoginController extends Controller
     public function update(Request $request)
     {
 
-
-        $exists ='exists:users,phone_number';
-        $min = 'min:8';
-        $confirmed = 'confirmed';
-
-        $this->userValidate($request,$exists,$min,$confirmed);
+        $attributes = $request->validate([
+            'password'=>'required|min:8|confirmed'
+        ]);
 
         $user = User::firstWhere('phone_number',$request->phone_number);
-
         $user->Fill([
-            'password' =>bcrypt($request->password)
+            'password' =>bcrypt($attributes['password'])
         ]);
         $user->save();
 
@@ -98,10 +94,10 @@ class LoginController extends Controller
     }
 
 
-    public function userValidate($request,$exists =null,$min=null,$confirmed=null){
+    public function userValidate($request){
         $attributes=$request->validate([
-            'phone_number'=>'required|'.$exists,
-            'password'=>'required|'.$min.'|'.$confirmed,
+            'phone_number'=>'required',
+            'password'=>'required',
         ]);
 
         return $attributes;

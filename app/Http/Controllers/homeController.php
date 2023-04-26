@@ -10,6 +10,7 @@ use App\Models\charity;
 use App\Models\my_case;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class homeController extends Controller
@@ -40,10 +41,20 @@ class homeController extends Controller
 
 
 //        Charities nearby
-
-        $charities = charityCollection::collection(
-            charity::where('address',auth()->user()->address)->get()
-        );
+        if (auth('api')->user()) {
+            $charities = charityCollection::collection(
+                charity::
+//                where('city_id',auth('api')->user()->city_id)
+                where('district_id', auth('api')->user()->district_id)
+                    ->get()
+            );
+        }else{
+//            TAKE THE LAST 5 CHARITIES AND SHOW THEM
+            $charities = charityCollection::collection(
+                charity::latest()->take(5)->get()
+            );
+        }
+//        dd(Auth::user()->id);
 
         return response([
             "categories"=>[
