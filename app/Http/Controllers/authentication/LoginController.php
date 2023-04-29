@@ -33,7 +33,9 @@ class LoginController extends Controller
         $attributes = $this->userValidate($request);
 
         if (!auth()->attempt($attributes)){
-            return response(['error' => 'يوجد خطأ في رقم الهاتف أو كلمة المرور'],Response::HTTP_UNAUTHORIZED);
+            return response(['errors' =>[
+                "login" =>'يوجد خطأ في رقم الهاتف أو كلمة المرور'
+            ] ],Response::HTTP_UNAUTHORIZED);
         }
         $token = auth()->user()->createToken('API Token')->accessToken;
 

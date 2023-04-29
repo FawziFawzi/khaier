@@ -57,7 +57,9 @@ class SignupController extends Controller
             ],
             [
                 'city_id.exists'=>'هذه المدينة غير مسجله لدينا',
+                'city_id.required'=>'حقل المدينة مطلوب',
                 'district_id.exists'=>'هذه المنطقة غير مسجله لدينا',
+                'district_id.required'=>'حقل المدينة مطلوب',
             ]);
 
         $attributes['password'] = bcrypt($request->password);

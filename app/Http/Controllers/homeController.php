@@ -23,6 +23,9 @@ class homeController extends Controller
     public function index()
     {
 
+        $user_name =\auth()->user()->name;
+        $user_address =\auth()->user()->city->name .','. \auth('api')->user()->district->name;
+
         //        High priority cases
         $cases =  My_casesCollection::collection(
             my_case::orderBy('priority','desc')->get()
@@ -37,15 +40,15 @@ class homeController extends Controller
 
 //        categories at the top
         $categories_link = route('categories.index');
-        $categities = categotiesResource::collection(category::all());
+        $categities = categotiesResource::collection(category::take(3)->get());
 
 
 //        Charities nearby
-        if (auth('api')->user()) {
+        if (auth()->user()) {
             $charities = charityCollection::collection(
                 charity::
 //                where('city_id',auth('api')->user()->city_id)
-                where('district_id', auth('api')->user()->district_id)
+                where('district_id', auth()->user()->district_id)
                     ->get()
             );
         }else{
@@ -57,9 +60,13 @@ class homeController extends Controller
 //        dd(Auth::user()->id);
 
         return response([
+            "user"=>[
+                'name'=>$user_name,
+                'address'=>$user_address
+            ],
             "categories"=>[
-                'categories link'=>$categories_link,
-                'all_categories' =>$categities
+                'All categories link'=>$categories_link,
+                'categories' =>$categities
             ] ,
             "cases"=>$cases,
             "charities" =>$charities,

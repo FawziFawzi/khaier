@@ -16,11 +16,13 @@ class My_casesCollection extends JsonResource
     public function toArray($request)
     {
         return [
-//            'data'=>$this->collection,
+            'id'=>              $this->id,
             'title'=>           $this->title,
             'category'=>        $this->category->name,
             'maxAmount'=>       $this->max_amount,
             'collectedAmount'=> $this->collected_amount,
+            'percentage'=>round(($this->collected_amount/$this->max_amount)*100),
+            'remaining_days'=> random_int(1,30),
             'priority'=>        $this->priority,
             'thumbnail'=>       $this->thumbnail,
             'href'=>[

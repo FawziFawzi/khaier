@@ -33,7 +33,7 @@ Route::post('/login',[LoginController::class,'store'])->middleware('guest');
 
 Route::post('/Verify_phone_forgetPassword',[VerifynumberController::class,'forgetPassword'])->middleware('guest');
 Route::post('/update_password',[LoginController::class,'update']);
-Route::get('/home',[homeController::class, 'index']);
+Route::get('/home',[homeController::class, 'index'])->middleware('auth:api');
 
 Route::apiResource('/charities',CharityController::class)->middleware(['auth:api']);
 Route::apiResource('/my_cases',MyCaseController::class)->middleware(['auth:api']);
