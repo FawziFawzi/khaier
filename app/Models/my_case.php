@@ -12,30 +12,55 @@ class my_case extends Model
     use HasFactory;
 
 
-//    public function scopeFilter($query)
-//    {
-//        if (request('search')){
-//
-//            $query->
-//                    whereHas('category', function (Builder $query) {
-//                    $query->where('name', 'like', '%'.request('search') .'%');
-//            });
-//            if ($query->count() != 0){
-//                return response([
-//                    'cases' =>$query
-//                ],Response::HTTP_OK);
-//            }else{
-//                return response([
-//                    'error'=>'لا يوجد حالات مطابقة لبحثك'
-//                ],Response::HTTP_NOT_FOUND);
-//            }
-//
-//        }
-//    }
-//        public function scopeFilter(){
-//
-//        }
 
+        public function scopeSearch($query){
+            $query->
+            whereHas('category', function ($query) {
+                $query->where('name', 'like', '%'.request('search') .'%');
+            });
+        }
+        public function scopeCity($query){
+            $query->when(request('city'),function ($query){
+                $query->
+                whereHas('charity',function (Builder $query){
+                    $query
+                        ->whereHas('city',function (Builder $query){
+                            $query->where('name',\request('city'));
+                        });
+                });
+            });
+
+        }
+
+        public function scopeDistrict($query){
+            $query->when(request('district'),function ($query){
+                $query->
+                whereHas('charity',function (Builder $query){
+                    $query
+                        ->whereHas('district',function (Builder $query){
+                            $query->where('name',\request('district'));
+                        });
+                });
+            });
+        }
+    public function scopeUserLocation($query)
+    {
+
+        $query->
+        whereHas('charity', function (Builder $query) {
+            $query
+                ->where('district_id', auth()->user()->district_id);
+//                    ->whereHas('city',function (Builder $query){
+//                        $query->where('name',auth()->user()->city->name);
+//                    })
+//                    ->WhereHas('district',function (Builder $query){
+//                        $query->where('name',auth()->user()->district->name);
+        });
+    }
+//        });
+
+//        });
+//    }
 
     public function donations(){
         return $this->hasMany(donation::class);

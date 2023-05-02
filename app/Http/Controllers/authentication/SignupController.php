@@ -44,25 +44,34 @@ class SignupController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = $this->validate
-        (
-            $request,
-            [
+//        $attributes = $this->validate
+//        (
+//            $request,
+//            [
+//            'username' => 'required|min:8|max:20|unique:users,username',
+//            'name'=>'required|max:30',
+//            'phone_number' => 'required|min:11|max:12|unique:users,phone_number',
+//            'password' => 'required|confirmed|min:8',
+//            'city_id' => 'required|exists:cities,id',
+//            'district_id' => 'required|exists:districts,id'
+//            ],
+//            [
+//                'city_id.exists'=>'هذه المدينة غير مسجله لدينا',
+//                'city_id.required'=>'حقل المدينة مطلوب',
+//                'district_id.exists'=>'هذه المنطقة غير مسجله لدينا',
+//                'district_id.required'=>'حقل المدينة مطلوب',
+//            ]);
+        $attributes = $request->validate([
             'username' => 'required|min:8|max:20|unique:users,username',
             'name'=>'required|max:30',
             'phone_number' => 'required|min:11|max:12|unique:users,phone_number',
             'password' => 'required|confirmed|min:8',
             'city_id' => 'required|exists:cities,id',
             'district_id' => 'required|exists:districts,id'
-            ],
-            [
-                'city_id.exists'=>'هذه المدينة غير مسجله لدينا',
-                'city_id.required'=>'حقل المدينة مطلوب',
-                'district_id.exists'=>'هذه المنطقة غير مسجله لدينا',
-                'district_id.required'=>'حقل المدينة مطلوب',
-            ]);
+        ]);
 
         $attributes['password'] = bcrypt($request->password);
+
         $user = User::create($attributes);
         $token = $user->createToken('API Token')->accessToken;
         return response([ 'user' => $user, 'token' => $token],Response::HTTP_OK);

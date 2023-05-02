@@ -24,7 +24,9 @@ class homeController extends Controller
     {
 
         $user_name =\auth()->user()->name;
-        $user_address =\auth()->user()->city->name .','. \auth('api')->user()->district->name;
+        $user_city =\auth()->user()->city->name;
+        $user_district =\auth()->user()->district->name;
+        $user_address =$user_city .','. $user_district;
 
         //        High priority cases
         $cases =  My_casesCollection::collection(
@@ -34,7 +36,18 @@ class homeController extends Controller
 //     Search
 
         if (request('search')){
-          return  $this->searchCases();
+            if (\request('location')=='user'){
+                $cases =My_casesCollection::collection(
+                    my_case::search()->userLocation()->get()
+                );
+                return  $this->searchCount($cases);
+            }else{
+                $cases =My_casesCollection::collection(
+                    my_case::search()->city()->district()->get()
+                );
+                return  $this->searchCount($cases);
+            }
+
         }
 
 
@@ -118,14 +131,8 @@ class homeController extends Controller
         //
     }
 
-    public function searchCases()
-    {
-        $cases =
-            My_casesCollection::collection(
-                        my_case::whereHas('category', function (Builder $query) {
-                            $query->where('name', 'like', '%'.request('search') .'%');
-                        })->get()
-            );
+
+    private function searchCount($cases){
 
         if ($cases->count() != 0){
             return response([
