@@ -50,17 +50,9 @@ class my_case extends Model
         whereHas('charity', function (Builder $query) {
             $query
                 ->where('district_id', auth()->user()->district_id);
-//                    ->whereHas('city',function (Builder $query){
-//                        $query->where('name',auth()->user()->city->name);
-//                    })
-//                    ->WhereHas('district',function (Builder $query){
-//                        $query->where('name',auth()->user()->district->name);
+
         });
     }
-//        });
-
-//        });
-//    }
 
     public function donations(){
         return $this->hasMany(donation::class);
@@ -73,5 +65,8 @@ class my_case extends Model
     public function category()
     {
         return $this->belongsTo(category::class);
+    }
+    public function caseBookmarks(){
+            return $this->hasMany(MyCaseBookmarks::class);
     }
 }

@@ -54,4 +54,11 @@ class User extends Authenticatable
     public function district(){
         return $this->belongsTo(District::class);
     }
+
+    public function charityBookmarks(){
+        return $this->hasMany(CharityBookmarks::class);
+    }
+    public function caseBookmarks(){
+        return $this->hasMany(MyCaseBookmarks::class);
+    }
 }

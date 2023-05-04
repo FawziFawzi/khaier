@@ -27,4 +27,7 @@ class charity extends Model
     public function district(){
         return $this->belongsTo(District::class);
     }
+    public function charityBookmarks(){
+        return $this->hasMany(CharityBookmarks::class);
+    }
 }

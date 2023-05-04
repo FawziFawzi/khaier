@@ -3,7 +3,9 @@
 use App\Http\Controllers\authentication\LoginController;
 use App\Http\Controllers\authentication\SignupController;
 use App\Http\Controllers\authentication\VerifynumberController;
+use App\Http\Controllers\CaseBookmarksController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CharityBookmarksController;
 use App\Http\Controllers\homeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +40,8 @@ Route::get('/home',[homeController::class, 'index'])->middleware('auth:api');
 Route::apiResource('/charities',CharityController::class)->middleware(['auth:api']);
 Route::apiResource('/my_cases',MyCaseController::class)->middleware(['auth:api']);
 Route::apiResource('/categories', CategoryController::class)->middleware(['auth:api']);
+Route::get('/bookmarks/charities',[CharityBookmarksController::class,'index'])->middleware('auth:api');
+Route::get('/bookmarks/cases',[CaseBookmarksController::class,'index'])->middleware('auth:api');
 
 
 Route::apiResource('/donations',DonationController::class);
