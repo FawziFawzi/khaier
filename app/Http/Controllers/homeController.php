@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\categories\categotiesResource;
 use App\Http\Resources\charities\charityCollection;
+use App\Http\Resources\city\CityResource;
+use App\Http\Resources\district\DistrictResource;
 use App\Http\Resources\My_cases\My_casesCollection;
 use App\Models\category;
 use App\Models\charity;
+use App\Models\City;
+use App\Models\District;
 use App\Models\my_case;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -133,10 +137,13 @@ class homeController extends Controller
 
 
     private function searchCount($cases){
-
         if ($cases->count() != 0){
+            $cities = CityResource::collection(City::all());
+            $districts =DistrictResource::collection(District::all());
             return response([
-                'cases' =>$cases
+                'cases' =>$cases,
+                'cities' =>$cities,
+                'districts'=>$districts
             ],Response::HTTP_OK);
         }else{
             return response([
