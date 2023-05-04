@@ -3,6 +3,9 @@
 namespace App\Http\Resources\My_cases;
 
 
+use App\Models\my_case;
+use App\Models\MyCaseBookmarks;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class My_casesCollection extends JsonResource
@@ -15,8 +18,18 @@ class My_casesCollection extends JsonResource
      */
     public function toArray($request)
     {
+        $bookmarked =0;
+
+        $caseBookmarks = MyCaseBookmarks::where('user_id',auth()->user()->id)
+            ->where('my_case_id',$this->id)->get();
+        if ($caseBookmarks->count()!=0){
+            $bookmarked =1;
+        }
         return [
+            'user_id'=>\auth()->user()->id,
+
             'id'=>              $this->id,
+            'bookmarked'=>$bookmarked,
             'title'=>           $this->title,
             'category'=>        $this->category->name,
             'maxAmount'=>       $this->max_amount,

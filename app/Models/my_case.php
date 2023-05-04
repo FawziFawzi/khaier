@@ -67,6 +67,6 @@ class my_case extends Model
         return $this->belongsTo(category::class);
     }
     public function caseBookmarks(){
-            return $this->hasMany(MyCaseBookmarks::class);
+            return $this->hasMany(MyCaseBookmarks::class,'my_case_id');
     }
 }

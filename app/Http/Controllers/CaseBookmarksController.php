@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\My_cases\My_casesCollection;
 use App\Models\my_case;
+use App\Models\MyCaseBookmarks;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,42 +53,22 @@ class CaseBookmarksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = $this->validate($request,[
+            'user_id'=>'required|exists:users,id',
+            'my_case_id'=>'required|exists:my_cases,id'
+        ],[
+            'user_id.exists'=>'هذه المستخدم غير مسجل لدينا',
+            'user_id.required'=>'حقل المستخدم مطلوب',
+            'my_case_id.exists'=>'هذه الحالة غير مسجله لدينا',
+            'my_case_id.required'=>'حقل حاله التبرع مطلوب',
+        ]);
+
+        MyCaseBookmarks::create($attributes);
+        return \response([
+            'message'=>"Case Bookmarked"
+        ],Response::HTTP_ACCEPTED);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -97,6 +78,11 @@ class CaseBookmarksController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+         $bookmark = MyCaseBookmarks::destroy($id);
+
+         return \response([
+             "message"=>"bookmark".$bookmark." deleted"
+         ],Response::HTTP_CONTINUE);
     }
 }

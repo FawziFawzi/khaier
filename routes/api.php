@@ -40,8 +40,13 @@ Route::get('/home',[homeController::class, 'index'])->middleware('auth:api');
 Route::apiResource('/charities',CharityController::class)->middleware(['auth:api']);
 Route::apiResource('/my_cases',MyCaseController::class)->middleware(['auth:api']);
 Route::apiResource('/categories', CategoryController::class)->middleware(['auth:api']);
+
 Route::get('/bookmarks/charities',[CharityBookmarksController::class,'index'])->middleware('auth:api');
+Route::post('/bookmarks/charities',[CharityBookmarksController::class,'store'])->middleware('auth:api');
+Route::delete('/bookmarks/charities/{id}',[CharityBookmarksController::class,'destroy'])->middleware('auth:api');
 Route::get('/bookmarks/cases',[CaseBookmarksController::class,'index'])->middleware('auth:api');
+Route::post('/bookmarks/cases',[CaseBookmarksController::class,'store'])->middleware('auth:api');
+Route::delete('/bookmarks/cases/{id}',[CaseBookmarksController::class,'destroy'])->middleware('auth:api');
 
 
 Route::apiResource('/donations',DonationController::class);

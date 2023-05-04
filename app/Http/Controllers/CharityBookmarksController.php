@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\charities\charityCollection;
 use App\Models\charity;
+use App\Models\CharityBookmarks;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +30,38 @@ class CharityBookmarksController extends Controller
                 'error' => 'لا يوجد جمعيات محفوظه'
             ],Response::HTTP_NOT_FOUND);
         }
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $attributes = $this->validate($request,[
+            'user_id'=>'required|exists:users,id',
+            'charity_id'=>'required|exists:charities,id'
+        ],[
+            'user_id.exists'=>'هذه المستخدم غير مسجل لدينا',
+            'user_id.required'=>'حقل المستخدم مطلوب',
+            'charity_id.exists'=>'هذه الجمعية غير مسجله لدينا',
+            'charity_id.required'=>'حقل الجمعية مطلوب',
+        ]);
+//        dd($attributes);
+        CharityBookmarks::create($attributes);
+        return \response([
+            'message'=>"Charity Bookmarked"
+        ],Response::HTTP_ACCEPTED);
+    }
+
+    public function destroy($id)
+    {
+
+        $bookmark = CharityBookmarks::destroy($id);
+
+        return \response([
+            "message"=>"bookmark".$bookmark." deleted"
+        ],Response::HTTP_CONTINUE);
     }
 
 
