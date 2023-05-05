@@ -79,10 +79,10 @@ class CaseBookmarksController extends Controller
     public function destroy($id)
     {
 
-         $bookmark = MyCaseBookmarks::destroy($id);
+          MyCaseBookmarks::destroy($id);
 
-         return \response([
-             "message"=>"bookmark".$bookmark." deleted"
-         ],Response::HTTP_CONTINUE);
+         return response([
+             "message"=>"case bookmark deleted"
+         ],Response::HTTP_OK);
     }
 }

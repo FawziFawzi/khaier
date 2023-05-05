@@ -57,11 +57,11 @@ class CharityBookmarksController extends Controller
     public function destroy($id)
     {
 
-        $bookmark = CharityBookmarks::destroy($id);
+         CharityBookmarks::destroy($id);
 
         return \response([
-            "message"=>"bookmark".$bookmark." deleted"
-        ],Response::HTTP_CONTINUE);
+            "message"=>"charity bookmark deleted"
+        ],Response::HTTP_OK);
     }
 
 

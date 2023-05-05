@@ -18,18 +18,19 @@ class My_casesCollection extends JsonResource
      */
     public function toArray($request)
     {
-        $bookmarked =0;
+        $bookmark_id =0;
 
         $caseBookmarks = MyCaseBookmarks::where('user_id',auth()->user()->id)
-            ->where('my_case_id',$this->id)->get();
+            ->Where('my_case_id',$this->id)->get();
+
         if ($caseBookmarks->count()!=0){
-            $bookmarked =1;
+            $bookmark_id =$caseBookmarks[0]->id;
         }
         return [
             'user_id'=>\auth()->user()->id,
 
             'id'=>              $this->id,
-            'bookmarked'=>$bookmarked,
+            'bookmark_id'=>     $bookmark_id,
             'title'=>           $this->title,
             'category'=>        $this->category->name,
             'maxAmount'=>       $this->max_amount,
