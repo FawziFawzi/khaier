@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\charities\charityCollection;
+use App\Http\Resources\charities\charityResource;
+use App\Http\Resources\My_cases\My_casesCollection;
 use App\Models\charity;
 use App\Http\Requests\StorecharityRequest;
 use App\Http\Requests\UpdatecharityRequest;
+use App\Models\my_case;
+use Illuminate\Database\Eloquent\Builder;
 
 class CharityController extends Controller
 {
@@ -47,9 +52,51 @@ class CharityController extends Controller
      */
     public function show(charity $charity)
     {
+       $charitydata =new charityResource($charity);
+
+
+       if (!request('search')){
+           $cases = My_casesCollection::collection(
+               $this->getCases($charitydata)
+                   ->whereColumn('max_amount','>','collected_amount')
+                   ->get()
+           );
+       }else{
+           $cases = My_casesCollection::collection(
+               $this->getCases($charitydata)
+                   ->whereHas('category',function (Builder $query){
+                       $query->where('name',request('search'));
+                   })
+                   ->whereColumn('max_amount','>','collected_amount')
+                   ->get()
+           );
+       }
+
+
+       $doneCases = My_casesCollection::collection(
+          $this->getCases($charitydata)
+               ->whereColumn('max_amount','=','collected_amount')
+               ->get()
+       );
+       $urgentCases = My_casesCollection::collection(
+           $this->getCases($charitydata)
+               ->where('priority','>','3')
+               ->whereColumn('max_amount','>','collected_amount')
+                ->orderBy('priority','desc')->get()
+       );
+
         return response()->json([
-           $charity //dummy only
+           "charity"=>$charitydata,
+            "cases"=>$cases,
+            "urgentCases"=>$urgentCases,
+            "doneCases"=>$doneCases
         ]);
+    }
+
+    public function getCases($charitydata){
+        return my_case::whereHas('charity',function (Builder $query) use ($charitydata) {
+            $query->where('id',$charitydata->id);
+        });
     }
 
     /**
