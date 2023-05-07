@@ -34,6 +34,7 @@ class charityResource extends JsonResource
             'excerpt' =>$this->excerpt,
             'address' => City::findOrFail($this->city_id)->name .','.District::findOrFail($this->district_id)->name ,
             'thumbnail' =>$this->thumbnail,
+            'phoneNumber'=>$this->phone_number
         ];
     }
 }

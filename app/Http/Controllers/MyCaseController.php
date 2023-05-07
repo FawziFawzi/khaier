@@ -17,7 +17,7 @@ class MyCaseController extends Controller
      */
     public function index()
     {
-        return My_casesResource::collection(my_case::all());
+        return response(['Forbidden'],403);
     }
 
     /**

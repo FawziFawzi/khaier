@@ -54,6 +54,7 @@ class CategoryController extends Controller
     {
         $cases =My_casesCollection::collection($category->cases);
         return response([
+            "categoryName"=>$category->name,
             "cases" => $cases
         ]);
     }

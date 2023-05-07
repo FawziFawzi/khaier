@@ -18,15 +18,19 @@ class My_casesResource extends JsonResource
      */
     public function toArray($request)
     {
+        $charity =charity::findOrFail($this->charity_id);
         return [
             'title'=>           $this->title,
             'excerpt'=>         $this->excerpt,
             'maxAmount'=>       $this->max_amount,
             'collectedAmount'=> $this->collected_amount,
-            'priority'=>        $this->priority,
-            'category'=>        $this->category,
+            'percentage'=>round(($this->collected_amount/$this->max_amount)*100),
+            'remaining_days'=>  ($this->collected_amount !=$this->max_amount)?  random_int(1,30):0,
+            'category'=>        $this->category->name,
             'thumbnail'=>       $this->thumbnail,
-            'charityName'=>     charity::findOrFail($this->charity_id)->name,
+            'charityName'=>     $charity->name,
+            'charityThumbnail'=>$charity->thumbnail,
+            'charityPhoneNumber'=>$charity->phone_number,
             'href'=>            [
                 'charity'=>route('charities.show',$this->charity_id)
             ]
