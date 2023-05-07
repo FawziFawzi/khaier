@@ -63,7 +63,7 @@ class CaseBookmarksController extends Controller
             'my_case_id.required'=>'حقل حاله التبرع مطلوب',
         ]);
 
-        MyCaseBookmarks::create($attributes);
+        MyCaseBookmarks::firstOrCreate($attributes);
         return \response([
             'message'=>"Case Bookmarked"
         ],Response::HTTP_ACCEPTED);

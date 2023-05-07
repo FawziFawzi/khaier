@@ -48,7 +48,7 @@ class CharityBookmarksController extends Controller
             'charity_id.required'=>'حقل الجمعية مطلوب',
         ]);
 //        dd($attributes);
-        CharityBookmarks::create($attributes);
+        CharityBookmarks::firstOrCreate($attributes);
         return \response([
             'message'=>"Charity Bookmarked"
         ],Response::HTTP_ACCEPTED);
