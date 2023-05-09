@@ -7,6 +7,7 @@ use App\Http\Controllers\CaseBookmarksController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CharityBookmarksController;
 use App\Http\Controllers\homeController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonationController;
@@ -31,6 +32,7 @@ Route::post('/Verify_phone_signup',[VerifynumberController::class,'signup'])->mi
 Route::post('/signup',[SignupController::class,'store'])->middleware('guest');
 Route::get('/signup',[SignupController::class, 'create'])->middleware('guest');
 Route::post('/login',[LoginController::class,'store'])->middleware('guest');
+Route::post('/logout',[LoginController::class,'destroy'])->middleware('auth:api');
 
 
 Route::post('/Verify_phone_forgetPassword',[VerifynumberController::class,'forgetPassword'])->middleware('guest');
@@ -48,5 +50,10 @@ Route::get('/bookmarks/cases',[CaseBookmarksController::class,'index'])->middlew
 Route::post('/bookmarks/cases',[CaseBookmarksController::class,'store'])->middleware('auth:api');
 Route::delete('/bookmarks/cases/{id}',[CaseBookmarksController::class,'destroy'])->middleware('auth:api');
 
+Route::get('/profile',[ProfileController::class,'index'])->middleware('auth:api');
+Route::get('/profile/edit',[ProfileController::class,'edit'])->middleware('auth:api');
+Route::post('/profile/update/{user}',[ProfileController::class,'update'])->middleware('auth:api');
+Route::post('/profile/update/password/{user}',[ProfileController::class,'updatePassword'])->middleware('auth:api');
+Route::delete('/profile/delete/{user}',[ProfileController::class,'destroy'])->middleware('auth:api');
 
 Route::apiResource('/donations',DonationController::class);

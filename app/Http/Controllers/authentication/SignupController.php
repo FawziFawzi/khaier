@@ -5,6 +5,7 @@ namespace App\Http\Controllers\authentication;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\city\CityResource;
 use App\Http\Resources\district\DistrictResource;
+use App\Http\Resources\User\UserResource;
 use App\Models\City;
 use App\Models\District;
 use App\Models\User;
@@ -44,6 +45,7 @@ class SignupController extends Controller
      */
     public function store(Request $request)
     {
+
         $attributes = $this->validate
         (
             $request,
@@ -66,7 +68,7 @@ class SignupController extends Controller
 
         $user = User::create($attributes);
         $token = $user->createToken('API Token')->accessToken;
-        return response([ 'user' => $user, 'token' => $token],Response::HTTP_OK);
+        return response([ 'user' => new UserResource($user), 'token' => $token],Response::HTTP_OK);
 
 
 

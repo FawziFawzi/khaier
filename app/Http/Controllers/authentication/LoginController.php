@@ -5,6 +5,7 @@ namespace App\Http\Controllers\authentication;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -90,9 +91,13 @@ class LoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy()
     {
-        //
+        $user = Auth::user()->token();
+        $user->revoke();
+        return \response([
+            "message"=>'logged out'
+        ]);
     }
 
 
