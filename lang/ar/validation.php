@@ -103,7 +103,7 @@ return [
     'min_digits' => 'الحقل :attribute يجب أن يحتوي :min أرقام على الأقل.',
     'multiple_of' => 'الحقل :attribute يجب أن يكون من مضاعفات :value.',
     'not_in' => 'الحقل :attribute لاغٍ',
-    'not_regex' => 'الحقل :attribute نوعه لاغٍ',
+    'not_regex' => 'الحقل :attribute لا يقبل الحروفٍ',
     'numeric' => 'يجب على الحقل :attribute أن يكون رقمًا',
     'password' => [
         'letters' => 'يجب ان يشمل حقل :attribute على حرف واحد على الاقل.',
@@ -206,6 +206,13 @@ return [
         'q'                     => 'البحث',
         'link'                  => ' ',
         'slug'                  => ' ',
+        'quantity'              =>'الكمية',
+        'pickup_date'           =>'تاريخ الاستلام',
+        'pickup_time_start'     =>'بداية وقت الاستلام',
+        'pickup_time_end'       =>'نهاية وقت الاستلام',
+        'pickup_address'        =>'العنوان',
+        'thumbnail'             =>'الصورة'
+
     ],
 
 ];

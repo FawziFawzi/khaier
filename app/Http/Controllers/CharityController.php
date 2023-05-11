@@ -10,6 +10,7 @@ use App\Http\Requests\StorecharityRequest;
 use App\Http\Requests\UpdatecharityRequest;
 use App\Models\my_case;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class CharityController extends Controller
 {
@@ -39,9 +40,27 @@ class CharityController extends Controller
      * @param  \App\Http\Requests\StorecharityRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorecharityRequest $request)
+    public function store(Request $request)
     {
-        //
+        $attributes= $request->validate([
+            'name'=>'required|unique:charities,name',
+            'phone_number'=>'required|unique:charities,phone_number|max:11',
+            'email'=>'required|email|unique:charities,email',
+            'password'=>'required',
+            'thumbnail'=>'required|image',
+            'excerpt'=>'required',
+            'city_id'=>'required|exists:cities,id',
+            'district_id'=>'required|exists:districts,id'
+        ]);
+        $attributes['password'] = bcrypt($request['password']);
+        $attributes['email_verified_at'] = now();
+        $attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails/charity');
+
+        $charity = charity::create($attributes);
+        return response([
+            'message'=>'charity created',
+            'charity'=>new charityResource($charity)
+        ]);
     }
 
     /**

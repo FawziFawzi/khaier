@@ -56,4 +56,6 @@ Route::post('/profile/update/{user}',[ProfileController::class,'update'])->middl
 Route::post('/profile/update/password/{user}',[ProfileController::class,'updatePassword'])->middleware('auth:api');
 Route::delete('/profile/delete/{user}',[ProfileController::class,'destroy'])->middleware('auth:api');
 
-Route::apiResource('/donations',DonationController::class);
+Route::post('/donation/{case}',[DonationController::class,'store'])->middleware('auth:api');
+
+Route::post('/charity/add',[CharityController::class,'store'])->middleware('auth:api');

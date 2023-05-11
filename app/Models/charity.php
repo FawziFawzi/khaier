@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class charity extends Model
 {
+
     use HasFactory;
+
+    protected $guarded=[];
 
     public function my_cases(){
         return $this->hasMany(my_case::class);
