@@ -24,38 +24,43 @@ use App\Http\Controllers\MyCaseController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::middleware(['guest:api'])->group(function (){
+    Route::post('/Verify_phone_signup',[VerifynumberController::class,'signup']);
+    Route::post('/signup',[SignupController::class,'store']);
+    Route::get('/signup',[SignupController::class, 'create']);
+    Route::post('/login',[LoginController::class,'store']);
 
-Route::middleware(['auth:api'])->get('/user', function (Request $request) {
-    return $request->user();
+
+    Route::post('/Verify_phone_forgetPassword',[VerifynumberController::class,'forgetPassword']);
+    Route::post('/update_password',[LoginController::class,'update']);
 });
-Route::post('/Verify_phone_signup',[VerifynumberController::class,'signup'])->middleware('guest');
-Route::post('/signup',[SignupController::class,'store'])->middleware('guest');
-Route::get('/signup',[SignupController::class, 'create'])->middleware('guest');
-Route::post('/login',[LoginController::class,'store'])->middleware('guest');
-Route::post('/logout',[LoginController::class,'destroy'])->middleware('auth:api');
+Route::middleware(['auth:api'])->group(function () {
+    Route::post('/logout',[LoginController::class,'destroy']);
+    Route::get('/home',[homeController::class, 'index']);
+
+    Route::apiResource('/charities',CharityController::class);
+    Route::apiResource('/my_cases',MyCaseController::class);
+    Route::apiResource('/categories', CategoryController::class);
+
+    Route::get('/bookmarks/charities',[CharityBookmarksController::class,'index']);
+    Route::post('/bookmarks/charities',[CharityBookmarksController::class,'store']);
+    Route::delete('/bookmarks/charities/{id}',[CharityBookmarksController::class,'destroy']);
+    Route::get('/bookmarks/cases',[CaseBookmarksController::class,'index']);
+    Route::post('/bookmarks/cases',[CaseBookmarksController::class,'store']);
+    Route::delete('/bookmarks/cases/{id}',[CaseBookmarksController::class,'destroy']);
+
+    Route::get('/profile',[ProfileController::class,'index']);
+    Route::get('/profile/edit',[ProfileController::class,'edit']);
+    Route::post('/profile/update/{user}',[ProfileController::class,'update']);
+    Route::post('/profile/update/password/{user}',[ProfileController::class,'updatePassword']);
+    Route::delete('/profile/delete/{user}',[ProfileController::class,'destroy']);
+
+    Route::post('/donation/{case}',[DonationController::class,'store']);
+    Route::get('/donation/old/cases',[DonationController::class,'index']);
+    Route::get('/donation/details',[DonationController::class,'show']);
+
+    Route::post('/charity/add',[CharityController::class,'store']);
+
+});
 
 
-Route::post('/Verify_phone_forgetPassword',[VerifynumberController::class,'forgetPassword'])->middleware('guest');
-Route::post('/update_password',[LoginController::class,'update']);
-Route::get('/home',[homeController::class, 'index'])->middleware('auth:api');
-
-Route::apiResource('/charities',CharityController::class)->middleware(['auth:api']);
-Route::apiResource('/my_cases',MyCaseController::class)->middleware(['auth:api']);
-Route::apiResource('/categories', CategoryController::class)->middleware(['auth:api']);
-
-Route::get('/bookmarks/charities',[CharityBookmarksController::class,'index'])->middleware('auth:api');
-Route::post('/bookmarks/charities',[CharityBookmarksController::class,'store'])->middleware('auth:api');
-Route::delete('/bookmarks/charities/{id}',[CharityBookmarksController::class,'destroy'])->middleware('auth:api');
-Route::get('/bookmarks/cases',[CaseBookmarksController::class,'index'])->middleware('auth:api');
-Route::post('/bookmarks/cases',[CaseBookmarksController::class,'store'])->middleware('auth:api');
-Route::delete('/bookmarks/cases/{id}',[CaseBookmarksController::class,'destroy'])->middleware('auth:api');
-
-Route::get('/profile',[ProfileController::class,'index'])->middleware('auth:api');
-Route::get('/profile/edit',[ProfileController::class,'edit'])->middleware('auth:api');
-Route::post('/profile/update/{user}',[ProfileController::class,'update'])->middleware('auth:api');
-Route::post('/profile/update/password/{user}',[ProfileController::class,'updatePassword'])->middleware('auth:api');
-Route::delete('/profile/delete/{user}',[ProfileController::class,'destroy'])->middleware('auth:api');
-
-Route::post('/donation/{case}',[DonationController::class,'store'])->middleware('auth:api');
-
-Route::post('/charity/add',[CharityController::class,'store'])->middleware('auth:api');
