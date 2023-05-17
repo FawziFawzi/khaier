@@ -49,14 +49,10 @@ class VerifynumberController extends Controller
      */
     public function forgetPassword(Request $request)
     {
-        $rules =['phone_number' => 'required|min:11|max:12|exists:users,phone_number',
-
-            ];
+        $rules =['phone_number' => 'required|min:11|max:11|exists:users,phone_number'];
         $input = $request->only('phone_number');
         $phonemessage ='رقمك غير مسجل ';
-
         $validator = $this->validation($input,$rules,$phonemessage);
-
         if ($validator->fails()) {
             return response([ 'error' => $validator->messages()],Response::HTTP_NOT_FOUND);
         }

@@ -45,8 +45,6 @@ class LoginController extends Controller
             'user'=>new UserResource(\auth()->user()),
             'token'=>$token
         ],Response::HTTP_OK);
-
-
     }
 
     /**

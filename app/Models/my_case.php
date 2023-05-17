@@ -57,11 +57,9 @@ class my_case extends Model
     public function donations(){
         return $this->hasMany(donation::class);
     }
-
     public function charity(){
         return $this->belongsTo(charity::class);
     }
-
     public function category()
     {
         return $this->belongsTo(category::class);

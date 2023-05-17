@@ -29,8 +29,6 @@ Route::middleware(['guest:api'])->group(function (){
     Route::post('/signup',[SignupController::class,'store']);
     Route::get('/signup',[SignupController::class, 'create']);
     Route::post('/login',[LoginController::class,'store']);
-
-
     Route::post('/Verify_phone_forgetPassword',[VerifynumberController::class,'forgetPassword']);
     Route::post('/update_password',[LoginController::class,'update']);
 });
@@ -38,13 +36,17 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/logout',[LoginController::class,'destroy']);
     Route::get('/home',[homeController::class, 'index']);
 
-    Route::apiResource('/charities',CharityController::class);
-    Route::apiResource('/my_cases',MyCaseController::class);
     Route::apiResource('/categories', CategoryController::class);
+
+
+    Route::apiResource('/charities',CharityController::class);
 
     Route::get('/bookmarks/charities',[CharityBookmarksController::class,'index']);
     Route::post('/bookmarks/charities',[CharityBookmarksController::class,'store']);
     Route::delete('/bookmarks/charities/{id}',[CharityBookmarksController::class,'destroy']);
+
+    Route::apiResource('/my_cases',MyCaseController::class);
+
     Route::get('/bookmarks/cases',[CaseBookmarksController::class,'index']);
     Route::post('/bookmarks/cases',[CaseBookmarksController::class,'store']);
     Route::delete('/bookmarks/cases/{id}',[CaseBookmarksController::class,'destroy']);
@@ -59,7 +61,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/donation/old/cases',[DonationController::class,'index']);
     Route::get('/donation/details',[DonationController::class,'show']);
 
-    Route::post('/charity/add',[CharityController::class,'store']);
+    Route::post('/charity/add',[CharityController::class,'store'])->middleware('admin');
 
 });
 

@@ -72,14 +72,11 @@ class CharityController extends Controller
     public function show(charity $charity)
     {
        $charitydata =new charityResource($charity);
-
-
        if (!request('search')){
            $cases = My_casesCollection::collection(
                $this->getCases($charitydata)
                    ->whereColumn('max_amount','>','collected_amount')
-                   ->get()
-           );
+                   ->get());
        }else{
            $cases = My_casesCollection::collection(
                $this->getCases($charitydata)
@@ -87,11 +84,8 @@ class CharityController extends Controller
                        $query->where('name',request('search'));
                    })
                    ->whereColumn('max_amount','>','collected_amount')
-                   ->get()
-           );
+                   ->get());
        }
-
-
        $doneCases = My_casesCollection::collection(
           $this->getCases($charitydata)
                ->whereColumn('max_amount','=','collected_amount')
@@ -103,7 +97,6 @@ class CharityController extends Controller
                ->whereColumn('max_amount','>','collected_amount')
                 ->orderBy('priority','desc')->get()
        );
-
         return response()->json([
            "charity"=>$charitydata,
             "cases"=>$cases,
