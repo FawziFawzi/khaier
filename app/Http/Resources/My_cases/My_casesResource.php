@@ -27,9 +27,9 @@ class My_casesResource extends JsonResource
             'percentage'=>round(($this->collected_amount/$this->max_amount)*100),
             'remaining_days'=>  ($this->collected_amount !=$this->max_amount)?  random_int(1,30):0,
             'category'=>        $this->category->name,
-            'thumbnail'=>       $this->thumbnail,
+            'thumbnail'=>       asset('storage/'.$this->thumbnail),
             'charityName'=>     $charity->name,
-            'charityThumbnail'=>$charity->thumbnail,
+            'charityThumbnail'=>asset('storage/'.$charity->thumbnail),
             'charityPhoneNumber'=>$charity->phone_number,
             'href'=>            [
                 'charity'=>route('charities.show',$this->charity_id)

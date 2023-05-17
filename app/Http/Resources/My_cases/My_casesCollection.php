@@ -38,7 +38,7 @@ class My_casesCollection extends JsonResource
             'percentage'=>round(($this->collected_amount/$this->max_amount)*100),
             'remaining_days'=>  ($this->collected_amount !=$this->max_amount)?  random_int(1,30):0,
             'priority'=>        $this->priority,
-            'thumbnail'=>       $this->thumbnail,
+            'thumbnail'=>       asset('storge/'.$this->thumbnail),
             'href'=>[
                 'fullCard'=>route('my_cases.show',$this->id)]
         ];

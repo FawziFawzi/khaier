@@ -62,6 +62,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/donation/details',[DonationController::class,'show']);
 
     Route::post('/charity/add',[CharityController::class,'store'])->middleware('admin');
+    Route::post('/charity/{charity}/addcase',[MyCaseController::class,'store'])->middleware('admin');
 
 });
 

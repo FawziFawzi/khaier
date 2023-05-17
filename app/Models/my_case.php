@@ -11,6 +11,8 @@ class my_case extends Model
 {
     use HasFactory;
 
+    protected $guarded=[];
+
 
 
         public function scopeSearch($query){

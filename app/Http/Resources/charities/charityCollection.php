@@ -33,7 +33,7 @@ class charityCollection extends JsonResource
             'name'=>$this->name,
             'excerpt' =>$this->excerpt,
             'address' => City::findOrFail($this->city_id)->name .','.District::findOrFail($this->district_id)->name ,
-            'thumbnail' =>$this->thumbnail,
+            'thumbnail' =>asset('storage/'.$this->thumbnail),
             'href'=> route('charities.show',$this->id)
         ];
     }

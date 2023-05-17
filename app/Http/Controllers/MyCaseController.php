@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\My_cases\My_casesCollection;
 use App\Http\Resources\My_cases\My_casesResource;
+use App\Models\category;
+use App\Models\charity;
 use App\Models\my_case;
 use App\Http\Requests\Storemy_caseRequest;
 use App\Http\Requests\Updatemy_caseRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Symfony\Component\HttpFoundation\Response;
 
 class MyCaseController extends Controller
 {
@@ -36,9 +41,28 @@ class MyCaseController extends Controller
      * @param  \App\Http\Requests\Storemy_caseRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Storemy_caseRequest $request)
+    public function store(Request $request,charity $charity)
     {
-        //
+        $attributes = $this->validate($request,[
+            'title'=>'required',
+            'excerpt'=>'required',
+            'max_amount'=>'required',
+            'collected_amount'=>'required',
+            'priority'=>'required',
+            'thumbnail'=>'required|image',
+            'category'=>'required'
+        ]);
+        $category = category::where('name',$request['category'])->get();
+        $category_id = $category[0]->id;
+        $attributes = Arr::except($attributes,['category']);
+        $attributes['category_id'] =$category_id;
+        $attributes['charity_id'] =$charity->id;
+        $attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails/case');
+        $case = my_case::create($attributes);
+        return response([
+            'case'=>new My_casesResource($case)
+        ],Response::HTTP_OK);
+
     }
 
     /**
