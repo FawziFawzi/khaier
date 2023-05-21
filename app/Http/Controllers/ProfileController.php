@@ -9,6 +9,7 @@ use App\Models\City;
 use App\Models\District;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller
@@ -50,13 +51,20 @@ class ProfileController extends Controller
 
     public function edit()
     {
+        $authCity = City::where('id',auth()->user()->city_id)->firstOrFail();
+        $authDistrict = District::where('id',auth()->user()->district_id)->firstOrFail();
+
+
         $user = new UserResource(auth()->user());
+        $userAddress = ['city'=>$authCity->name,'district'=>$authDistrict->name];
+
         $cities = CityResource::collection(City::all());
         $districts =DistrictResource::collection(District::all());
 
 
         return \response([
             'user'=>$user,
+            'address'=>$userAddress,
             'cities'=>$cities,
             'districts'=>$districts,
         ],Response::HTTP_OK);
@@ -92,7 +100,7 @@ class ProfileController extends Controller
         $user->update($attributes);
 
         return \response([
-            'message'=>"updated user data",
+            'message'=>"تم تعديل بياناتك بنجاح",
             "user"=>new UserResource($user)
         ]);
 
@@ -106,7 +114,7 @@ class ProfileController extends Controller
         $user->update($attributes);
 
         return \response([
-            'message'=>"password updated",
+            'message'=>"تم تعديل كلمة المرور بنجاح",
             'user'=>new UserResource($user)
         ]);
     }
@@ -122,7 +130,7 @@ class ProfileController extends Controller
 
         $user->delete();
         return \response([
-            'message'=>'account deleted'
+            'message'=>'تم حذف الحساب'
         ]);
 
     }

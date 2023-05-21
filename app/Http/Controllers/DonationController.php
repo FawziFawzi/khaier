@@ -72,7 +72,7 @@ class DonationController extends Controller
         $attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails/donations');
 
         donation::create($attributes);
-        return response(['message'=>'Donated successfully'],Response::HTTP_OK);
+        return response(['message'=>'تم التبرع بنجاح'],Response::HTTP_OK);
     }
 
     /**

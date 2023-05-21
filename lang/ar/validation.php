@@ -179,6 +179,7 @@ return [
         'last_name'             => 'اسم العائلة',
         'password'              => 'كلمة المرور',
         'password_confirmation' => 'تأكيد كلمة المرور',
+        'old_password'          => 'كلمة المرور القديمة',
         'city'                  => 'المدينة',
         'country'               => 'الدولة',
         'address'               => 'العنوان',

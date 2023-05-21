@@ -79,7 +79,7 @@ class LoginController extends Controller
         $user->save();
 
        return response([
-           'message'=>'password updated successfully',
+           'message'=>'تم تعديل كلمة المرور بنجاح',
            'link'=>env('APP_URL').'/api/login'
        ],Response::HTTP_ACCEPTED);
     }
@@ -95,7 +95,7 @@ class LoginController extends Controller
         $user = Auth::user()->token();
         $user->revoke();
         return \response([
-            "message"=>'logged out'
+            "message"=>'تم تسجيل الخروج'
         ]);
     }
 

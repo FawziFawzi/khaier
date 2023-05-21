@@ -58,7 +58,7 @@ class CharityController extends Controller
 
         $charity = charity::create($attributes);
         return response([
-            'message'=>'charity created',
+            'message'=>'تم انشاء الجمية بنجاح',
             'charity'=>new charityResource($charity)
         ]);
     }

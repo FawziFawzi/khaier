@@ -61,6 +61,8 @@ class SignupController extends Controller
                 'district_id.required'=>'حقل المدينة مطلوب',
             ]);
         $attributes['password'] = bcrypt($request->password);
+        $avatar ="thumbnails/avatar/2ZowtjVV4I8QSwLqY3OLMY0nxoTZqNFP6WqFzrNA.png";
+        $attributes['thumbnail'] = $avatar;
         $user = User::create($attributes);
         $token = $user->createToken('API Token')->accessToken;
         return response([ 'user' => new UserResource($user), 'token' => $token],Response::HTTP_OK);

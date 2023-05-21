@@ -49,7 +49,7 @@ class CharityBookmarksController extends Controller
         ]);
         CharityBookmarks::firstOrCreate($attributes);
         return \response([
-            'message'=>"Charity Bookmarked"
+            'message'=>"تم اضافة الجمعية الى المحفوظات"
         ],Response::HTTP_ACCEPTED);
     }
 
@@ -59,7 +59,7 @@ class CharityBookmarksController extends Controller
          CharityBookmarks::destroy($id);
 
         return \response([
-            "message"=>"charity bookmark deleted"
+            "message"=>"تم ازالة الجمعية من المحفوظات"
         ],Response::HTTP_OK);
     }
 

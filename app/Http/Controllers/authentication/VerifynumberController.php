@@ -38,7 +38,7 @@ class VerifynumberController extends Controller
         if ($validator->fails()) {
             return response([ 'error' => $validator->messages()],Response::HTTP_UNAUTHORIZED);
         }
-        return response(['message' => 'accepted'],Response::HTTP_ACCEPTED);
+        return response(['message' => 'الرقم مقبول'],Response::HTTP_ACCEPTED);
     }
 
     /**

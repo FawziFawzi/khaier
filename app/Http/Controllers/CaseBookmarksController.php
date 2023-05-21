@@ -65,7 +65,7 @@ class CaseBookmarksController extends Controller
 
         MyCaseBookmarks::firstOrCreate($attributes);
         return \response([
-            'message'=>"Case Bookmarked"
+            'message'=>"تم اضافة الحالة الى المحفوظات"
         ],Response::HTTP_ACCEPTED);
     }
 
@@ -82,7 +82,7 @@ class CaseBookmarksController extends Controller
           MyCaseBookmarks::destroy($id);
 
          return response([
-             "message"=>"case bookmark deleted"
+             "message"=>"تم ازالة الحالة من المحفوظات"
          ],Response::HTTP_OK);
     }
 }
