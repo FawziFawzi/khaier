@@ -86,17 +86,26 @@ class CharityController extends Controller
                    ->whereColumn('max_amount','>','collected_amount')
                    ->get());
        }
+        if ($cases->count()==0){
+            $cases = 'لا يوجد حالات';
+        }
        $doneCases = My_casesCollection::collection(
           $this->getCases($charitydata)
                ->whereColumn('max_amount','=','collected_amount')
                ->get()
        );
+       if ($doneCases->count()==0){
+           $doneCases = 'لا يوجد حالات منتهية';
+       }
        $urgentCases = My_casesCollection::collection(
            $this->getCases($charitydata)
                ->where('priority','>','3')
                ->whereColumn('max_amount','>','collected_amount')
                 ->orderBy('priority','desc')->get()
        );
+        if ($urgentCases->count()==0){
+            $urgentCases = 'لا يوجد حالات حرجة';
+        }
         return response()->json([
            "charity"=>$charitydata,
             "cases"=>$cases,

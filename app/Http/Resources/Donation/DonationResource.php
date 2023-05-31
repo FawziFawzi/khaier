@@ -15,7 +15,7 @@ class DonationResource extends JsonResource
     public function toArray($request)
     {
         $delivery =random_int(1,5);
-        if ($delivery>1){
+        if ($delivery>1 && $delivery!=5){
             $color = 2;
         }elseif ($delivery = 5){
             $color = 3;
