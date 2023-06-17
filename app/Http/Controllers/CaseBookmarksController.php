@@ -54,35 +54,27 @@ class CaseBookmarksController extends Controller
     public function store(Request $request)
     {
         $attributes = $this->validate($request,[
-            'user_id'=>'required|exists:users,id',
             'my_case_id'=>'required|exists:my_cases,id'
         ],[
-            'user_id.exists'=>'هذه المستخدم غير مسجل لدينا',
-            'user_id.required'=>'حقل المستخدم مطلوب',
             'my_case_id.exists'=>'هذه الحالة غير مسجله لدينا',
             'my_case_id.required'=>'حقل حاله التبرع مطلوب',
         ]);
+        $bookmarked = MyCaseBookmarks::where('user_id',auth()->user()->id)->where('my_case_id',$request['my_case_id'])->first();
+        $bookmark_result = $bookmarked !=null ? $bookmarked->id : null;
 
+        if ($bookmark_result == null) {
+        $attributes['user_id'] = auth()->user()->id;
         MyCaseBookmarks::firstOrCreate($attributes);
         return \response([
             'message'=>"تم اضافة الحالة الى المحفوظات"
         ],Response::HTTP_ACCEPTED);
+        }else{
+            MyCaseBookmarks::destroy($bookmark_result);
+            return response([
+                "message"=>"تم ازالة الحالة من المحفوظات"
+            ],Response::HTTP_OK);
+        }
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-
-          MyCaseBookmarks::destroy($id);
-
-         return response([
-             "message"=>"تم ازالة الحالة من المحفوظات"
-         ],Response::HTTP_OK);
-    }
 }
