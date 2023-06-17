@@ -18,18 +18,17 @@ class charityCollection extends JsonResource
      */
     public function toArray($request)
     {
-        $bookmark_id =0;
+        $bookmarked = false;
         $charityBookmarks = CharityBookmarks::where('user_id',auth()->user()->id)
             ->where('charity_id',$this->id)->get();
 
         if ($charityBookmarks->count()!=0){
-            $bookmark_id =$charityBookmarks[0]->id;
+            $bookmarked = true;
         }
         return [
             'user_id'=>\auth()->user()->id,
-
             'id'=>$this->id,
-            'bookmark_id'=>$bookmark_id,
+            'bookmarked'=>$bookmarked,
             'name'=>$this->name,
             'excerpt' =>$this->excerpt,
             'address' => City::findOrFail($this->city_id)->name .','.District::findOrFail($this->district_id)->name ,

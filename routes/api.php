@@ -44,7 +44,6 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::get('/bookmarks/charities',[CharityBookmarksController::class,'index']);
     Route::post('/bookmarks/charities',[CharityBookmarksController::class,'store']);
-    Route::delete('/bookmarks/charities/{id}',[CharityBookmarksController::class,'destroy']);
 
     Route::apiResource('/my_cases',MyCaseController::class);
 
