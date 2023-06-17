@@ -10,7 +10,8 @@
         "laravel/framework": "^9.19",
         "laravel/passport": "^11.6",
         "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "stripe/stripe-php": "^10.15"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",

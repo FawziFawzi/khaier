@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CharityBookmarksController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StripePaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonationController;
@@ -60,6 +61,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/donation/{case}',[DonationController::class,'store']);
     Route::get('/donation/old/cases',[DonationController::class,'index']);
     Route::get('/donation/details',[DonationController::class,'show']);
+
+    Route::post('/payment/{id}',[StripePaymentController::class,'pay']);
 
     Route::post('/charity/add',[CharityController::class,'store'])->middleware('admin');
     Route::post('/charity/{charity}/addcase',[MyCaseController::class,'store'])->middleware('admin');
