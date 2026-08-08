@@ -18,7 +18,7 @@ class UserResource extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name,
             'phoneNumber'=>$this->phone_number,
-            'thumbnail'=>asset('storage/'. $this->thumbnail),
+            'thumbnail'=>asset('storage/'.$this->thumbnail),
 
         ];
     }

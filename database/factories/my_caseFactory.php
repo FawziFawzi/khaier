@@ -23,7 +23,7 @@ class my_caseFactory extends Factory
             'max_amount'=>random_int(5000,7000),
             'collected_amount'=>random_int(1000,3000),
             'priority'=>random_int(1,5),
-            'category'=>$this->faker->word(),
+            'category_id'=>random_int(1,5),
             'thumbnail'=>$this->faker->image(),
             'charity_id'=>charity::factory()
         ];

@@ -87,7 +87,7 @@ class CharityController extends Controller
                    ->get());
        }
         if ($cases->count()==0){
-            $cases = 'لا يوجد حالات';
+            $cases = [];
         }
        $doneCases = My_casesCollection::collection(
           $this->getCases($charitydata)
@@ -95,7 +95,7 @@ class CharityController extends Controller
                ->get()
        );
        if ($doneCases->count()==0){
-           $doneCases = 'لا يوجد حالات منتهية';
+           $doneCases = [];
        }
        $urgentCases = My_casesCollection::collection(
            $this->getCases($charitydata)
@@ -104,7 +104,7 @@ class CharityController extends Controller
                 ->orderBy('priority','desc')->get()
        );
         if ($urgentCases->count()==0){
-            $urgentCases = 'لا يوجد حالات حرجة';
+            $urgentCases = [];
         }
         return response()->json([
            "charity"=>$charitydata,

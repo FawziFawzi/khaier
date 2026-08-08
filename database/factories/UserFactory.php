@@ -19,8 +19,7 @@ class UserFactory extends Factory
     {
         return [
             'username'=>$this->faker->unique()->userName(),
-            'firstname' => fake()->firstName(),
-            'lastname' => fake()->lastName(),
+            'name' => fake()->name(),
             'phone_number'=>fake()->unique()->e164PhoneNumber(),
             'phone_number_verified_at'=>now(),
 

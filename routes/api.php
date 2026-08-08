@@ -49,7 +49,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::get('/bookmarks/cases',[CaseBookmarksController::class,'index']);
     Route::post('/bookmarks/cases',[CaseBookmarksController::class,'store']);
-    Route::delete('/bookmarks/cases/{id}',[CaseBookmarksController::class,'destroy']);
+    
 
     Route::get('/profile',[ProfileController::class,'index']);
     Route::get('/profile/edit',[ProfileController::class,'edit']);
