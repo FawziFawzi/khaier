@@ -16,7 +16,7 @@ class StripePaymentController extends Controller
 
 
     public function pay(Request $request,$id){
-        Stripe\Stripe::setApiKey(env('stripe_secret'));
+        Stripe\Stripe::setApiKey(config('payment.stripe_key'));
 
        $attributes = $this->validate($request,[
             'name'=>'required',
@@ -28,10 +28,9 @@ class StripePaymentController extends Controller
         ]);
 
        $attributes['currency'] = 'EGP';
-        $attributes['source'] = 'sk_test_51NGlYQJYyShnk1PtNgbIUbE9mV12AmTZ70zs8Q2d3pjXGFdtYP7pkf7exBrvrvYAEvoKaOx0KBZmAmh6SHyXlNWg00NSNKf4YG';
+        $attributes['source'] = config('payment.stripe_key');
         $charge =Stripe\Charge::create($attributes);
-        $stripe = new \Stripe\StripeClient('sk_test_51NGlYQJYyShnk1PtNgbIUbE9mV12AmTZ70zs8Q2d3pjXGFdtYP7pkf7exBrvrvYAEvoKaOx0KBZmAmh6SHyXlNWg00NSNKf4YG');
-        $stripe = new \Stripe\StripeClient(env('stripe_secret'));
+        $stripe = new \Stripe\StripeClient(config('payment.stripe_key'));
         $res =$stripe->tokens->create([
             'card' => [
                 'number' => $request->cardNumber,
@@ -41,13 +40,12 @@ class StripePaymentController extends Controller
             ],
         ]);
 
-        $responce = $stripe->charges->create([
+        $response = $stripe->charges->create([
             'name'=>$request->name,
             'amount' => $request->amount,
             'currency'=>'EGP',
             'source' => $res->id
         ]);
-        dd($responce);
 
         if ($charge['status']=='succeeded'){
             return response([
